@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nahrávání souboru</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            max-width: 400px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        input[type="file"] {
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<h1>Nahrávání souboru</h1>
+<form id="uploadForm" action="/api/config" method="POST" enctype="multipart/form-data">
+    <label for="file">Vyberte soubor:</label>
+    <input type="file" id="file" name="file" required>
+    <button type="submit">Nahrát</button>
+</form>
+<script>
+        const form = document.getElementById('uploadForm');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                alert(result.message || 'Soubor byl úspěšně nahrán');
+            } catch (error) {
+                alert('Došlo k chybě při nahrávání souboru');
+            }
+        });
+    </script>
+</body>
+</html>
