@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const path = require('path')
+const {loginUser} = require('./auth')
 
 
 
@@ -26,6 +27,22 @@ app.get('/form',(req,res) => {
     res.sendFile('form.html',{root: path.resolve(__dirname, '..')})
 }
 )
+
+app.get('/login',(req,res) => {
+    res.sendFile('login.html',{root: path.resolve(__dirname, '..')})
+}
+)
+
+app.post('/api/login',(req,res) =>{
+    const email = req.body.email
+    const pasword = req.body.pasword
+    try{
+        const token = loginUser(email,pasword)
+        res.json({token:token})
+    }catch{
+        res.text('nepovedlo se prihlaseni')
+    }
+})
 
 // Start serveru
 const port = process.env.PORT || 3000;
